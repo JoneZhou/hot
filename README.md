@@ -1,4 +1,4 @@
-# hot
+# hot : bill分支是基于master的业务分支
 
 ------
 
