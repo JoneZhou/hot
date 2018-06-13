@@ -87,7 +87,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`username`,`password`,`state`,`create_time`) values (1,'starzou','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',NULL,'2014-07-17 12:59:08');
+insert  into `user`(`id`,`username`,`password`,`state`,`create_time`) values (1,'admin','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',NULL,'2014-07-17 12:59:08');
 
 /*Table structure for table `user_role` */
 

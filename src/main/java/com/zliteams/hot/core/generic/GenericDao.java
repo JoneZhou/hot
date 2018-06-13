@@ -1,5 +1,12 @@
 package com.zliteams.hot.core.generic;
 
+import java.util.List;
+import java.util.Map;
+
+import com.zliteams.hot.core.feature.orm.mybatis.Page;
+import com.zliteams.hot.core.report.Report;
+import com.zliteams.hot.web.model.User;
+
 /**
  * 所有自定义Dao的顶级接口, 封装常用的增删查改操作,
  * 可以通过Mybatis Generator Maven 插件自动生成Dao,
@@ -8,8 +15,6 @@ package com.zliteams.hot.core.generic;
  * Model : 代表数据库中的表 映射的Java对象类型
  * PK :代表对象的主键类型
  *
- * @author StarZou
- * @since 2014年6月9日 下午6:14:06
  */
 public interface GenericDao<Model, PK> {
 
@@ -41,5 +46,18 @@ public interface GenericDao<Model, PK> {
      * @return
      */
     Model selectByPrimaryKey(PK id);
+    
+    int insert(Model record);
+
+    int updateByPrimaryKey(Model record);
+    
+    List<Model> selectList(Model model);
+    
+    /**
+     * 分页条件查询
+     */
+    List<Model> selectByPage(Page<Model> page, Model model);
+    
+    List<Map<String, Object>> getReport(Report report);
 
 }

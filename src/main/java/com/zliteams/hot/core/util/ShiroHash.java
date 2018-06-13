@@ -23,6 +23,6 @@ public class ShiroHash {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(ShiroHash.encodedPassword("8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", "starzou", DEFAULT_SALT2));
+		System.out.println(ShiroHash.encodedPassword("8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", "admin", DEFAULT_SALT2));
 	}
 }

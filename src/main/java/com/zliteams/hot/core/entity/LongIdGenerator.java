@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Long型的ID生成器
- * @author Ricky
  */
 @Component("idGenerator")
 public class LongIdGenerator implements IdGenerator<Long>{

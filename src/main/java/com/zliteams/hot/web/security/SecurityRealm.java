@@ -1,6 +1,6 @@
 package com.zliteams.hot.web.security;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -8,7 +8,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -16,12 +15,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import com.zliteams.hot.core.SpringContext;
 import com.zliteams.hot.core.util.ShiroHash;
-import com.zliteams.hot.web.model.Permission;
-import com.zliteams.hot.web.model.Role;
 import com.zliteams.hot.web.model.User;
 import com.zliteams.hot.web.service.PermissionService;
 import com.zliteams.hot.web.service.RoleService;
@@ -30,8 +24,6 @@ import com.zliteams.hot.web.service.UserService;
 /**
  * 用户身份验证,授权 Realm 组件
  * 
- * @author StarZou
- * @since 2014年6月11日 上午11:35:28
  **/
 //@Component(value = "securityRealm")
 public class SecurityRealm extends AuthorizingRealm {
@@ -55,19 +47,13 @@ public class SecurityRealm extends AuthorizingRealm {
         String username = String.valueOf(principals.getPrimaryPrincipal());
 
         final User user = userService.selectByUsername(username);
-        final List<Role> roleInfos = roleService.selectRolesByUserId(user.getId());
-        for (Role role : roleInfos) {
-            // 添加角色
-        	logger.info(role.toString());
-            authorizationInfo.addRole(role.getRoleSign());
-
-            final List<Permission> permissions = permissionService.selectPermissionsByRoleId(role.getId());
-            for (Permission permission : permissions) {
-                // 添加权限
-            	logger.info(permission.toString());
-                authorizationInfo.addStringPermission(permission.getPermissionSign());
-            }
-        }
+        final Set<String> roles = roleService.findRoles(user.getId());
+        final Set<String> permissions = permissionService.findPermissions(user.getId());
+        logger.info(roles.toString());
+        logger.info(permissions.toString());
+        authorizationInfo.setRoles(roles);
+		authorizationInfo.setStringPermissions(permissions);
+       
         return authorizationInfo;
     }
 
@@ -84,8 +70,8 @@ public class SecurityRealm extends AuthorizingRealm {
         if (authentication == null) {
             throw new AuthenticationException("用户名错误.");
         }
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(username, authentication.getPassword(), getName());
-        authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(username+ShiroHash.DEFAULT_SALT2));
+        SimpleAuthenticationInfo authenticationInfo = 
+        		new SimpleAuthenticationInfo(username, authentication.getPassword(),ByteSource.Util.bytes(username+ShiroHash.DEFAULT_SALT2), getName());
         return authenticationInfo;
     }
 

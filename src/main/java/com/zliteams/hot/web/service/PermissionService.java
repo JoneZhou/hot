@@ -1,8 +1,11 @@
 package com.zliteams.hot.web.service;
 
 import java.util.List;
+import java.util.Set;
+
 import com.zliteams.hot.core.generic.GenericService;
 import com.zliteams.hot.web.model.Permission;
+import com.zliteams.hot.web.model.Role;
 
 /**
  * 权限 业务接口
@@ -18,6 +21,8 @@ public interface PermissionService extends GenericService<Permission, Long> {
      * @param roleId
      * @return
      */
-    List<Permission> selectPermissionsByRoleId(Long roleId);
+    List<Permission> selectPermissionsByRoleId(Set<Role> roles);
+
+	Set<String> findPermissions(Long id);
 
 }

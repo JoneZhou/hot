@@ -1,6 +1,8 @@
 package com.zliteams.hot.web.service;
 
 import java.util.List;
+import java.util.Set;
+
 import com.zliteams.hot.core.generic.GenericService;
 import com.zliteams.hot.web.model.Role;
 
@@ -18,4 +20,12 @@ public interface RoleService extends GenericService<Role, Long> {
      * @return
      */
     List<Role> selectRolesByUserId(Long userId);
+
+	// 添加角色-权限之间关系
+	public void correlationPermissions(Long roleId, Long... permissionIds);
+
+	// 移除角色-权限之间关系
+	public void uncorrelationPermissions(Long roleId, Long... permissionIds);
+
+	Set<String> findRoles(Long userId);
 }

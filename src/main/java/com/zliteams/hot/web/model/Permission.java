@@ -1,27 +1,19 @@
 package com.zliteams.hot.web.model;
 
+import com.zliteams.hot.core.generic.BaseModel;
+
 /**
  * 权限模型
  * 
- * @author StarZou
- * @since 2014年7月17日 下午1:02:55
  **/
-public class Permission {
-    private Long id;
+public class Permission extends BaseModel{
+	private static final long serialVersionUID = 1L;
 
     private String permissionName;
 
     private String permissionSign;
 
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getPermissionName() {
         return permissionName;

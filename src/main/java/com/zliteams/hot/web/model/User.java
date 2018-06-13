@@ -2,14 +2,14 @@ package com.zliteams.hot.web.model;
 
 import java.util.Date;
 
+import com.zliteams.hot.core.generic.BaseModel;
+
 /**
  * 用户模型
  * 
- * @author StarZou
- * @since 2014年7月5日 下午12:07:20
  **/
-public class User {
-    private Long id;
+public class User extends BaseModel{
+	private static final long serialVersionUID = 1L;
 
     private String username;
 
@@ -26,14 +26,6 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

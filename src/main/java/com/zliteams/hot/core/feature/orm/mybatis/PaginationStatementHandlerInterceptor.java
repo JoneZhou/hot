@@ -24,10 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.zliteams.hot.core.feature.orm.dialect.Dialect;
 import com.zliteams.hot.core.feature.orm.dialect.DialectFactory;
 
-/**
- * @author StarZou
- * @since 2014年5月18日 下午1:36:31
- **/
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 public class PaginationStatementHandlerInterceptor implements Interceptor {
 

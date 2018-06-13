@@ -1,14 +1,14 @@
 package com.zliteams.hot.core.feature.test;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 /**
  * TestSupport : Spring测试支持,用于测试由Spring 管理的bean,编写测试类时,继承该类
  *
- * @author StarZou
- * @since 2014年5月18日 下午2:28:58
  */
+@ActiveProfiles("develop")
 @ContextConfiguration(locations = {"classpath*:applicationContext.xml"})
 public class TestSupport extends AbstractJUnit4SpringContextTests {
     protected long startTime;

@@ -3,8 +3,6 @@ package com.zliteams.hot.web.security;
 /**
  * 操作类型
  * 
- * @author StarZou
- * @since 2014年6月17日 下午4:03:00
  **/
 public class OperationType {
     /**

@@ -9,8 +9,6 @@ import org.apache.ibatis.session.RowBounds;
  * 
  * @param <T>
  *            Page中记录的类型.
- * @author StarZou
- * @since 2014年5月18日 下午1:34:32
  **/
 public class Page<T> extends RowBounds {
     // --分页参数 --//

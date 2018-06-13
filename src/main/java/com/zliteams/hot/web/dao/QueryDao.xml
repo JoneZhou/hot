@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zliteams.hot.web.dao.QueryDao">
+
+	<!-- 生成条件 -->
+	<sql id="generateConditions">
+		<!-- 字段查询条件 -->
+		<if test="conditions!=null and conditions.size>0">
+			<foreach collection="conditions" item="condition">
+				<if test="condition.field.fieldType.name()=='Text'">
+					<if test="condition.compareType=='like'">
+						and ${condition.field.fieldId} LIKE '%${condition.fieldValue}%'
+					</if>
+					<if test="condition.compareType=='eq'">
+						and ${condition.field.fieldId}=#{condition.fieldValue}
+					</if>
+					<if test="condition.compareType=='neq'">
+						and (
+							${condition.field.fieldId} IS NULL
+							OR
+							${condition.field.fieldId}!=#{condition.fieldValue}
+						)
+					</if>
+				</if>
+				<if test="condition.field.fieldType.name()=='Date'">
+					<if test="condition.beginValue!=null">
+						and ${condition.field.fieldId}<![CDATA[>=]]>#{condition.beginValue}
+					</if>
+					<if test="condition.endValue!=null">
+						and ${condition.field.fieldId}<![CDATA[<=]]>#{condition.endValue}
+					</if>
+				</if>
+				<if test="condition.field.fieldType.name()=='Id'">
+					<if test="condition.idValues!=null">
+						<if test="condition.compareType=='eq'">
+							and ${condition.field.fieldId} IN
+							<foreach collection="condition.idValues" open="(" close=")" separator="," item="temp">#{temp}</foreach>
+						</if>
+						<if test="condition.compareType=='neq'">
+							and (
+								${condition.field.fieldId} IS NULL
+								OR
+								${condition.field.fieldId} NOT IN
+								<foreach collection="condition.idValues" open="(" close=")" separator="," item="temp">#{temp}</foreach>
+							)
+						</if>
+					</if>
+				</if>
+				<if test="condition.field.fieldType.name()=='Number'">
+					<if test="condition.compareType==null||condition.compareType==''||condition.compareType=='range'">
+						<if test="(condition.beginValue!=null and condition.beginValue!='') or (condition.endValue!=null and condition.endValue!='')">
+							<if test="condition.beginValue!=null and condition.beginValue!=''">
+								and ${condition.field.fieldId}&gt;=#{condition.beginValue}
+							</if>
+							<if test="condition.endValue!=null and condition.endValue!=''">
+								and ${condition.field.fieldId}&lt;=#{condition.endValue}
+							</if>
+						</if>
+					</if>
+					<if test="condition.compareType=='eq'">
+						and ${condition.field.fieldId}=#{condition.fieldValue}
+					</if>
+					<if test="condition.compareType=='gt'">
+						and ${condition.field.fieldId}>#{condition.fieldValue}
+					</if>
+					<if test="condition.compareType=='gtAndEq'">
+						and ${condition.field.fieldId}>=#{condition.fieldValue}
+					</if>
+					<if test="condition.compareType=='lt'">
+						and ${condition.field.fieldId}&lt;#{condition.fieldValue}
+					</if>
+					<if test="condition.compareType=='ltAndEq'">
+						and ${condition.field.fieldId}&lt;=#{condition.fieldValue}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</sql>
+	<!-- 生成查询字段 -->
+	<sql id="generateGroupFields">
+		<!-- 查询字段 -->
+		<if test="groupFields!=null and groupFields.size>0">
+			<foreach collection="groupFields" item="field" separator="," index="fieldId" open=",">
+				<choose>
+					<when test="field.fieldType!=null and field.fieldType.name()=='Date'" >
+						<if test="field.dateGroupType.name()=='year'">
+							date_format(${field.fieldId},'%Y') as gf_${field.fieldId}
+						</if>
+						<if test="field.dateGroupType.name()=='month'">
+							date_format(${field.fieldId},'%Y-%m') as gf_${field.fieldId}
+						</if>
+						<if test="field.dateGroupType.name()=='day'">
+							date_format(${field.fieldId},'%Y-%m-%d') as gf_${field.fieldId}
+						</if>
+						<if test="field.dateGroupType.name()=='week'">
+							date_format(${field.fieldId},'%Y-%u') as gf_${field.fieldId}
+						</if>
+					</when>
+					<otherwise>
+						${field.fieldId} as gf_${field.fieldId}
+					</otherwise>
+				</choose>
+			</foreach>
+		</if>
+	</sql>
+	<!-- 生成统计字段 -->
+	<sql id="generateStatisticsFields">
+		<!-- 统计字段 -->
+		<if test="statisticsFields!=null and statisticsFields.size>0">
+			<foreach collection="statisticsFields" item="statisticsField" separator="," index="fieldId" open=",">
+				<if test="statisticsField.statisticsType.name()=='sum'">
+					sum(${statisticsField.fieldId}) as sum_${statisticsField.fieldId}
+				</if>
+				<if test="statisticsField.statisticsType.name()=='count'">
+					count(${statisticsField.fieldId}) as count_${statisticsField.fieldId}
+				</if>
+				<if test="statisticsField.statisticsType.name()=='min'">
+					min(${statisticsField.fieldId}) as min_${statisticsField.fieldId}
+				</if>
+				<if test="statisticsField.statisticsType.name()=='max'">
+					max(${statisticsField.fieldId}) as max_${statisticsField.fieldId}
+				</if>
+				<if test="statisticsField.statisticsType.name()=='avg'">
+					avg(${statisticsField.fieldId}) as avg_${statisticsField.fieldId}
+				</if>
+			</foreach>
+		</if>
+	</sql>
+	
+	<!-- 生成group by -->
+	<sql id="generateGroupBy">
+		<if test="groupFields!=null and groupFields.size>0">
+			<foreach collection="groupFields" item="field" separator="," index="fieldId" open="group by">
+				<choose>
+					<when test="field.fieldType!=null and field.fieldType.name()=='Date'" >
+						<if test="field.dateGroupType.name()=='year'">
+							date_format(${field.fieldId},'%Y')
+						</if>
+						<if test="field.dateGroupType.name()=='month'">
+							date_format(${field.fieldId},'%Y-%m')
+						</if>
+						<if test="field.dateGroupType.name()=='day'">
+							date_format(${field.fieldId},'%Y-%m-%d')
+						</if>
+						<if test="field.dateGroupType.name()=='week'">
+							date_format(${field.fieldId},'%Y-%u')
+						</if>
+					</when>
+					<otherwise>
+						${field.fieldId}
+					</otherwise>
+				</choose>
+			</foreach>
+		</if>
+	</sql>
+	
+	<!-- 生成order by -->
+	<sql id="generateOrderBy">
+		<if test="orderFields!=null and orderFields.size>0">
+			<foreach collection="orderFields" item="orderField" separator="," index="fieldId" open="order by">
+				${orderField.fieldId} ${orderField.orderType.name()}
+			</foreach>
+		</if>
+	</sql>
+	
+</mapper>

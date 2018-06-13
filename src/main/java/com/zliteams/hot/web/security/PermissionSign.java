@@ -12,8 +12,6 @@ package com.zliteams.hot.web.security;
  * }
  * </pre>
  * 
- * @author StarZou
- * @since 2014年6月17日 下午3:58:51
  **/
 public class PermissionSign {
 

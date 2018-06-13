@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zliteams.hot.web.dao.BillMapper" >
+  <resultMap id="BaseResultMap" type="com.zliteams.hot.web.model.Bill" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user" property="user" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="category" property="category" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <association property="categoryObj" column="category" select="com.zliteams.hot.web.dao.CategoryMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user, type, money, category, create_time, `describe`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zliteams.hot.web.model.Bill" >
+    insert into bill (id, user, type, 
+      money, category, create_time, 
+      `describe`)
+    values (#{id,jdbcType=BIGINT}, #{user,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{money,jdbcType=DOUBLE}, #{category,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{describe,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zliteams.hot.web.model.Bill" >
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="user != null" >
+        user,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="describe != null" >
+        `describe`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zliteams.hot.web.model.Bill" >
+    update bill
+    <set >
+      <if test="user != null" >
+        user = #{user,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="describe != null" >
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zliteams.hot.web.model.Bill" >
+    update bill
+    set user = #{user,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      category = #{category,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `describe` = #{describe,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+	<!-- 分页条件查询 -->
+	<select	id="selectByPage" resultMap="BaseResultMap" parameterType="com.zliteams.hot.web.model.Bill">
+		select
+		<include refid="Base_Column_List" />
+		from bill
+		where 1=1
+		<if test="user != null">
+			and user = #{user,jdbcType=BIGINT}
+		</if>
+		<if test="type != null">
+			and type = #{type,jdbcType=INTEGER}
+		</if>
+		<if test="money != null">
+			and money = #{money,jdbcType=DOUBLE}
+		</if>
+		<if test="category != null">
+			and category = #{category,jdbcType=BIGINT}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+	
+	<select id="getBillReport" resultMap="BaseResultMap" parameterType="com.zliteams.hot.core.query.Query">
+		select e.type from bill E where 1=1
+		<include refid="com.zliteams.hot.web.dao.QueryDao.generateConditions"></include>
+	</select>
+	<!-- select 【分组字段】【统计字段】 from 【查询实体】 where 【查询条件】 group by 【分组字段】 order by 【排序字段】 -->
+	<select id="getReport" resultType="java.util.HashMap" parameterType="com.zliteams.hot.core.report.Report">
+		select
+			id
+			<include refid="com.zliteams.hot.web.dao.QueryDao.generateGroupFields"></include>
+			<include refid="com.zliteams.hot.web.dao.QueryDao.generateStatisticsFields"></include>
+		from ${entity}
+		where 1=1
+			<include refid="com.zliteams.hot.web.dao.QueryDao.generateConditions"></include>
+		<include refid="com.zliteams.hot.web.dao.QueryDao.generateGroupBy"></include>
+		<include refid="com.zliteams.hot.web.dao.QueryDao.generateOrderBy"></include>
+	</select>
+	
+</mapper>

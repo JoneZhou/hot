@@ -1,27 +1,19 @@
 package com.zliteams.hot.web.model;
 
+import com.zliteams.hot.core.generic.BaseModel;
+
 /**
  * 角色模型
  * 
- * @author StarZou
- * @since 2014年7月17日 下午1:02:25
  **/
-public class Role {
-    private Long id;
+public class Role extends BaseModel{
+	private static final long serialVersionUID = 1L;
 
     private String roleName;
 
     private String roleSign;
 
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getRoleName() {
         return roleName;

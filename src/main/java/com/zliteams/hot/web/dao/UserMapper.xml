@@ -8,81 +8,9 @@
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
     <sql id="Base_Column_List">
-        id, username, password, state, create_time
-    </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zliteams.hot.web.model.UserExample">
-        select
-        <if test="distinct">
-            distinct
-        </if>
-        <include refid="Base_Column_List" />
-        from user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
+		id, username, password, state, create_time
+	</sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List" />
@@ -92,12 +20,6 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from user
         where id = #{id,jdbcType=BIGINT}
-    </delete>
-    <delete id="deleteByExample" parameterType="com.zliteams.hot.web.model.UserExample">
-        delete from user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
-        </if>
     </delete>
     <insert id="insert" parameterType="com.zliteams.hot.web.model.User">
         insert into user (id, username, password,
@@ -142,46 +64,6 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.zliteams.hot.web.model.UserExample" resultType="java.lang.Integer">
-        select count(*) from user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update user
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
-            <if test="record.username != null">
-                username = #{record.username,jdbcType=VARCHAR},
-            </if>
-            <if test="record.password != null">
-                password = #{record.password,jdbcType=CHAR},
-            </if>
-            <if test="record.state != null">
-                state = #{record.state,jdbcType=VARCHAR},
-            </if>
-            <if test="record.createTime != null">
-                create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update user
-        set id = #{record.id,jdbcType=BIGINT},
-        username = #{record.username,jdbcType=VARCHAR},
-        password = #{record.password,jdbcType=CHAR},
-        state = #{record.state,jdbcType=VARCHAR},
-        create_time = #{record.createTime,jdbcType=TIMESTAMP}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
     <update id="updateByPrimaryKeySelective" parameterType="com.zliteams.hot.web.model.User">
         update user
         <set>
@@ -209,6 +91,27 @@
         #{createTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <select id="selectByUser" parameterType="com.zliteams.hot.web.model.User" resultMap="BaseResultMap">
+   		select
+        <include refid="Base_Column_List" />
+        from user
+        where 1=1
+		<if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="username != null">
+            and username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null">
+            and password = #{password,jdbcType=CHAR}
+        </if>
+        <if test="state != null">
+            and state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
 
     <!-- 用户登录验证查询 -->
     <select id="authentication" resultMap="BaseResultMap" parameterType="map">
@@ -219,18 +122,25 @@
     </select>
 
     <!-- 分页条件查询 -->
-    <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.zliteams.hot.web.model.UserExample">
+    <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.zliteams.hot.web.model.User">
         select
-        <if test="distinct">
-            distinct
-        </if>
         <include refid="Base_Column_List" />
         from user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
+        where 1=1
+		<if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
         </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
+        <if test="username != null">
+            and username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null">
+            and password = #{password,jdbcType=CHAR}
+        </if>
+        <if test="state != null">
+            and state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
         </if>
     </select>
 </mapper>
