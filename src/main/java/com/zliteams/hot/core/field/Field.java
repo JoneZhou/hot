@@ -1,10 +1,12 @@
 package com.zliteams.hot.core.field;
 
+import com.zliteams.hot.core.generic.BaseModel;
 import com.zliteams.hot.core.query.DateGroupType;
 import com.zliteams.hot.core.query.OrderType;
 import com.zliteams.hot.core.query.StatisticsType;
 
-public class Field {
+public class Field extends BaseModel{
+	private static final long serialVersionUID = 3316047456743017466L;
 
 	/**
 	 * 字段id
@@ -36,12 +38,24 @@ public class Field {
 	 */
 	private DateGroupType dateGroupType;
 	
+	/**
+	 * 显示字段名
+	 * 当前字段为对象时设置要查询该对象中的字段名
+	 */
+	private String fieldShow;
+	
+	/**
+	 *  冗余 可自行设置改字段的查询语句，默认值为 fieldId
+	 */
+	private String fieldSql;
+	
 	
 	public String getFieldId() {
 		return fieldId;
 	}
 	public void setFieldId(String fieldId) {
 		this.fieldId = fieldId;
+		this.fieldSql = fieldId; // 默认为字段名
 	}
 	public FieldType getFieldType() {
 		return fieldType;
@@ -72,5 +86,17 @@ public class Field {
 	}
 	public void setDateGroupType(DateGroupType dateGroupType) {
 		this.dateGroupType = dateGroupType;
+	}
+	public String getFieldShow() {
+		return fieldShow;
+	}
+	public void setFieldShow(String fieldShow) {
+		this.fieldShow = fieldShow;
+	}
+	public String getFieldSql() {
+		return fieldSql;
+	}
+	public void setFieldSql(String fieldSql) {
+		this.fieldSql = fieldSql;
 	}
 }

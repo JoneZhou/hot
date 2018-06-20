@@ -1,11 +1,13 @@
 package com.zliteams.hot.core.generic;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import com.zliteams.hot.core.entity.IdGenerator;
 import com.zliteams.hot.core.feature.orm.mybatis.Page;
+import com.zliteams.hot.core.report.Report;
 
 /**
  * GenericService的实现类, 其他的自定义 ServiceImpl, 继承自它,可以获得常用的增删查改操作,
@@ -80,5 +82,10 @@ public abstract class GenericServiceImpl<Model extends BaseModel, PK> implements
     @Override
     public List<Model> selectByPage(Page<Model> page, Model model) {
     	 return getDao().selectByPage(page, model);
+    }
+    
+    @Override
+    public List<Map<String, Object>> getReport(Report report) {
+    	return getDao().getReport(report);
     }
 }

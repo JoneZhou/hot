@@ -25,10 +25,10 @@
 					</if>
 				</if>
 				<if test="condition.field.fieldType.name()=='Date'">
-					<if test="condition.beginValue!=null">
+					<if test="condition.beginValue!=null and condition.beginValue!=''">
 						and ${condition.field.fieldId}<![CDATA[>=]]>#{condition.beginValue}
 					</if>
-					<if test="condition.endValue!=null">
+					<if test="condition.endValue!=null and condition.endValue!=''">
 						and ${condition.field.fieldId}<![CDATA[<=]]>#{condition.endValue}
 					</if>
 				</if>
@@ -86,20 +86,23 @@
 				<choose>
 					<when test="field.fieldType!=null and field.fieldType.name()=='Date'" >
 						<if test="field.dateGroupType.name()=='year'">
-							date_format(${field.fieldId},'%Y') as gf_${field.fieldId}
+							date_format(${field.fieldSql},'%Y') as gf_${field.fieldId}
 						</if>
 						<if test="field.dateGroupType.name()=='month'">
-							date_format(${field.fieldId},'%Y-%m') as gf_${field.fieldId}
+							date_format(${field.fieldSql},'%Y-%m') as gf_${field.fieldId}
 						</if>
 						<if test="field.dateGroupType.name()=='day'">
-							date_format(${field.fieldId},'%Y-%m-%d') as gf_${field.fieldId}
+							date_format(${field.fieldSql},'%Y-%m-%d') as gf_${field.fieldId}
 						</if>
 						<if test="field.dateGroupType.name()=='week'">
-							date_format(${field.fieldId},'%Y-%u') as gf_${field.fieldId}
+							date_format(${field.fieldSql},'%Y-%u') as gf_${field.fieldId}
 						</if>
 					</when>
+					<when test="field.fieldShow!=null">
+						(SELECT ${field.fieldShow} from ${field.fieldId} WHERE id  = ${field.fieldId}) as gf_${field.fieldId}
+					</when>
 					<otherwise>
-						${field.fieldId} as gf_${field.fieldId}
+						${field.fieldSql} as gf_${field.fieldId}
 					</otherwise>
 				</choose>
 			</foreach>

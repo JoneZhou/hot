@@ -1,8 +1,10 @@
 package com.zliteams.hot.core.generic;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zliteams.hot.core.feature.orm.mybatis.Page;
+import com.zliteams.hot.core.report.Report;
 import com.zliteams.hot.web.model.Category;
 
 /**
@@ -64,5 +66,7 @@ public interface GenericService<Model extends BaseModel, PK> {
      * 分页条件查询
      */
     List<Model> selectByPage(Page<Model> page, Model model);
+    
+    List<Map<String, Object>> getReport(Report report);
 
 }

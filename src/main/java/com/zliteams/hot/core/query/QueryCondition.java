@@ -79,11 +79,8 @@ public class QueryCondition implements Serializable {
 		if (fieldValue != null && !fieldValue.trim().isEmpty()) {
 			if (field.getFieldType() == FieldType.Date || field.getFieldType() == FieldType.Number) {
 				if (fieldValue != null && !fieldValue.trim().isEmpty()) {
-					String[] tempArray = fieldValue.trim().split("~");
-					String start = tempArray[0];
-					if (!start.equals("all")) {
-						beginValue = start;
-					}
+					fieldValue = fieldValue.trim();
+					beginValue = fieldValue.substring(0, fieldValue.indexOf("~"));
 				}
 			}
 		}
@@ -94,11 +91,8 @@ public class QueryCondition implements Serializable {
 		if (fieldValue != null && !fieldValue.trim().isEmpty()) {
 			if (field.getFieldType() == FieldType.Date || field.getFieldType() == FieldType.Number) {
 				if (fieldValue != null && !fieldValue.trim().isEmpty()) {
-					String[] tempArray = fieldValue.trim().split("~");
-					String end = tempArray[1];
-					if (!end.equals("all")) {
-						endValue = end;
-					}
+					fieldValue = fieldValue.trim();
+					endValue = fieldValue.substring((fieldValue.indexOf("~")+1),fieldValue.length());
 				}
 			}
 		}
@@ -125,5 +119,14 @@ public class QueryCondition implements Serializable {
 
 	public void setField(Field field) {
 		this.field = field;
+	}
+	
+	public static void main(String[] args) {
+		String a = "~";
+		String b = a.substring(0, a.indexOf("~"));
+		String c = a.substring((a.indexOf("~")+1), a.length());
+		System.out.println("index:" + a.indexOf("~") );
+		System.out.println("b:" + (b==null?b:"null") );
+		System.out.println("c:" + (c==null?c:"null") );
 	}
 }

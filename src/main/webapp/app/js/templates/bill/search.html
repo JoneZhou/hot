@@ -1,0 +1,49 @@
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/rest/bill/bill">记账</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="<% if(type=='info') {%> active <%}%>"><a class="router" href="/rest/bill/bill/info">Info</a></li>
+				<li class="<% if(type=='list') {%> active <%}%>"><a class="router" href="/rest/bill/bill/list">List</a></li>
+				<li class="<% if(type=='report') {%> active <%}%>"><a class="router" href="/rest/bill/bill/report">Report</a></li>
+			</ul>
+			<form id="search_bill" class="navbar-form navbar-left hidden j_search_bill">
+				<!-- 日期比较 -->
+				<div class="form-group">
+					<input type="date" class="form-control input-sm j_date-start">
+				</div>
+				<span>&nbsp;至&nbsp;</span>
+				<div class="form-group">
+					<input type="date" class="form-control input-sm j_date-end">
+				</div>
+				<div class="form-group">
+					<select id="j_bill-type" name="type" class="form-control j_billType input-sm" >
+						<option value="0">支出</option>
+						<option value="1">收入</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select name="category" class="form-control j_category input-sm">
+					</select>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control j_description input-sm" placeholder="描述">
+				</div>
+				<button type="button" class="btn btn-default btn-sm j_search-bill">搜索</button>
+			</form>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid -->
+</nav>

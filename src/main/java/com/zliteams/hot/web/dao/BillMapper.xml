@@ -8,11 +8,11 @@
     <result column="money" property="money" jdbcType="DOUBLE" />
     <result column="category" property="category" jdbcType="BIGINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
     <association property="categoryObj" column="category" select="com.zliteams.hot.web.dao.CategoryMapper.selectByPrimaryKey" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user, type, money, category, create_time, `describe`
+    id, user, type, money, category, create_time, `description`
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -27,10 +27,10 @@
   <insert id="insert" parameterType="com.zliteams.hot.web.model.Bill" >
     insert into bill (id, user, type, 
       money, category, create_time, 
-      `describe`)
+      `description`)
     values (#{id,jdbcType=BIGINT}, #{user,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
       #{money,jdbcType=DOUBLE}, #{category,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{describe,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zliteams.hot.web.model.Bill" >
     insert into bill
@@ -53,8 +53,8 @@
       <if test="createTime != null" >
         create_time,
       </if>
-      <if test="describe != null" >
-        `describe`,
+      <if test="description != null" >
+        `description`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -76,8 +76,8 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="describe != null" >
-        #{describe,jdbcType=VARCHAR},
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -99,8 +99,8 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="describe != null" >
-        `describe` = #{describe,jdbcType=VARCHAR},
+      <if test="description != null" >
+        `description` = #{description,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -112,7 +112,7 @@
       money = #{money,jdbcType=DOUBLE},
       category = #{category,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      `describe` = #{describe,jdbcType=VARCHAR}
+      `description` = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -144,7 +144,7 @@
 		<include refid="com.zliteams.hot.web.dao.QueryDao.generateConditions"></include>
 	</select>
 	<!-- select 【分组字段】【统计字段】 from 【查询实体】 where 【查询条件】 group by 【分组字段】 order by 【排序字段】 -->
-	<select id="getReport" resultType="java.util.HashMap" parameterType="com.zliteams.hot.core.report.Report">
+	<select id="getReport" resultType="java.util.Map" parameterType="com.zliteams.hot.core.report.Report">
 		select
 			id
 			<include refid="com.zliteams.hot.web.dao.QueryDao.generateGroupFields"></include>
@@ -153,6 +153,15 @@
 		where 1=1
 			<include refid="com.zliteams.hot.web.dao.QueryDao.generateConditions"></include>
 		<include refid="com.zliteams.hot.web.dao.QueryDao.generateGroupBy"></include>
+		<include refid="com.zliteams.hot.web.dao.QueryDao.generateOrderBy"></include>
+	</select>
+	
+	<select id="queryBills" resultMap="BaseResultMap" parameterType="com.zliteams.hot.core.query.Query">
+		select
+			<include refid="Base_Column_List" />
+   		from bill
+		where 1=1
+			<include refid="com.zliteams.hot.web.dao.QueryDao.generateConditions"></include>
 		<include refid="com.zliteams.hot.web.dao.QueryDao.generateOrderBy"></include>
 	</select>
 	

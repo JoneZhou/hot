@@ -1,0 +1,25 @@
+<div class="report">
+	<table class="table table-hover table-condensed table-bordered table-striped text-center">
+		<thead>
+			<tr>
+				<td>#</td>
+				<% _.each(ths, function(th) { %>
+			  		<td><%=th[1] %></td>
+				<% }); %>
+			</tr>
+		</thead>
+		<tbody>
+		<% _.each(list, function(item,index) { %>
+			<tr class="">
+				<td class=""><%=(index+1) %></td>
+			  	<% _.each(ths, function(th) { %>
+			  		<td><%=item[th[0]] %></td>
+				<% }); %>
+			</tr>
+		<% }); %>
+		</tbody>
+	</table>
+	<div id="main" style="width: 100%;height:400px;">
+		
+	</div>
+</div>

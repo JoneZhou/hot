@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.ser.std.ToStringSerializer;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.zliteams.hot.core.generic.BaseModel;
 
@@ -18,9 +19,10 @@ public class Bill extends BaseModel{
 
     private Long category;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createTime;
 
-    private String describe;
+    private String description;
     
     
     private Category categoryObj;
@@ -67,12 +69,12 @@ public class Bill extends BaseModel{
         this.createTime = createTime;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDdescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe == null ? null : describe.trim();
+    public void setdescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
 	public Category getCategoryObj() {

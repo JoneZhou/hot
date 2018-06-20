@@ -1,0 +1,30 @@
+<div class="list">
+	<table class="table table-hover table-condensed table-bordered table-striped">
+		<thead>
+			<tr>
+				<td>#</td>
+			  	<td>时间</td>
+			  	<td>类型</td>
+			  	<td>类别</td>
+			  	<td>金额</td>
+			</tr>
+		</thead>
+		<tbody>
+		<% _.each(page.result, function(bill,index) { %>
+			<tr class="">
+				<td class=""><%=(index+1) %></td>
+			  	<td class=""><%=(Date.create(bill.createTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) %></td>
+			  	<td class=""><%=(bill.type==0?'支出':'收入') %></td>
+			  	<td class=""><%=bill.categoryObj.name %></td>
+			  	<td class=""><%=bill.money %></td>
+			</tr>
+		<% }); %>
+		</tbody>
+	</table>
+	<nav aria-label="">
+		<ul class="pager">
+			<li class="j_prevPage previous <% if(!page.hasPrev) {%>disabled<%}%>"><a><span aria-hidden="true">&larr;</span> 上一页</a></li>
+			<li class="j_nextPage next <% if(!page.hasNext) {%>disabled<%}%>"><a>下一页 <span aria-hidden="true">&rarr;</span></a></li>
+		</ul>
+	</nav>
+</div>

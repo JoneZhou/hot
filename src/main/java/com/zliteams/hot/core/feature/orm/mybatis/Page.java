@@ -46,6 +46,11 @@ public class Page<T> extends RowBounds {
      * 总页数
      */
     protected int totalPages;
+    
+    protected boolean hasPrev = false;
+    
+    protected boolean hasNext = false;
+    
 
     // --计算 数据库 查询的参数 : LIMIT 3, 3; LIMIT offset, limit; --//
     /**
@@ -152,5 +157,47 @@ public class Page<T> extends RowBounds {
     public void setTotalPages(int totalPages) {
         this.totalPages = totalPages;
     }
+    
+    /**
+	 * 是否还有上一页.
+	 */
+	public boolean isHasPrev() {
+		if (!hasPrev) { // 如果为false时，实时查找是否有上一页
+			return pageNo <= getTotalPages() && (pageNo - 1) > 0 && getTotalPages() > 1;
+		} else {
+			return hasPrev;
+		}
+	}
+
+	/**
+	 * 设置是否有上一页
+	 * 
+	 */
+	public void setHasPrev(boolean hasPrev) {
+		this.hasPrev = hasPrev;
+		this.hasPrev = isHasPrev();
+	}
+    
+    /**
+	 * 是否还有下一页.
+	 */
+	public boolean isHasNext() {
+		if (!hasNext) { // 如果为false时，实时查找是否有下一页
+			return (pageNo + 1) <= getTotalPages();
+		} else {
+			return hasNext;
+		}
+	}
+
+	/**
+	 * 设置是否有下一页
+	 * 说明：因为目前很多分页查询count很慢，所以增加一个set方法，后台自行控制判断是否有下一页。
+	 * 
+	 * @param hasNext
+	 */
+	public void setHasNext(boolean hasNext) {
+		this.hasNext = hasNext;
+		this.hasNext = isHasNext();
+	}
 
 }

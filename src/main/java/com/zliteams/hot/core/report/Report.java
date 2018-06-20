@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.zliteams.hot.core.query.QueryCondition;
 import com.zliteams.hot.core.field.Field;
+import com.zliteams.hot.core.generic.BaseModel;
 import com.zliteams.hot.core.generic.EntityType;
 
-public class Report {
+public class Report extends BaseModel{
+	private static final long serialVersionUID = -6041732065563174779L;
 
 	private String name;
 

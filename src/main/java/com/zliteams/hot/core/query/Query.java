@@ -3,6 +3,8 @@ package com.zliteams.hot.core.query;
 import java.io.Serializable;
 import java.util.List;
 
+import com.zliteams.hot.core.field.Field;
+
 /**
  * 查询
  */
@@ -19,11 +21,7 @@ public class Query implements Serializable {
 	/**
 	 * 排序字段
 	 */
-	private String orderField;
-	/**
-	 * 是否升序
-	 */
-	private Boolean asc;
+	private List<Field> orderFields;
 	/**
 	 * 条件
 	 */
@@ -45,27 +43,19 @@ public class Query implements Serializable {
 		this.pageSize = pageSize;
 	}
 
+	public List<Field> getOrderFields() {
+		return orderFields;
+	}
+
+	public void setOrderFields(List<Field> orderFields) {
+		this.orderFields = orderFields;
+	}
+
 	public List<QueryCondition> getConditions() {
 		return conditions;
 	}
 
 	public void setConditions(List<QueryCondition> conditions) {
 		this.conditions = conditions;
-	}
-
-	public String getOrderField() {
-		return orderField;
-	}
-
-	public void setOrderField(String orderField) {
-		this.orderField = orderField;
-	}
-
-	public Boolean getAsc() {
-		return asc;
-	}
-
-	public void setAsc(Boolean asc) {
-		this.asc = asc;
 	}
 }
