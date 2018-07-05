@@ -7,7 +7,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, create_time, type
+    id, user, name, create_time, type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -20,9 +20,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.zliteams.hot.web.model.Category" >
-    insert into category (id, name, create_time, type
+    insert into category (id, user, name, create_time, type
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=BIGINT}, #{user,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zliteams.hot.web.model.Category" >
@@ -30,6 +30,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="user != null" >
+        user,
       </if>
       <if test="name != null" >
         name,
@@ -44,6 +47,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=BIGINT},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -84,7 +90,10 @@
     <include refid="Base_Column_List" />
     from category
     where 1 = 1
-    <if test="name != null" >
+      <if test="user != null" >
+        and user = #{user,jdbcType=BIGINT}
+      </if>
+      <if test="name != null" >
         and name = #{name,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null" >

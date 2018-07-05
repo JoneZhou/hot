@@ -6,6 +6,8 @@ import com.zliteams.hot.core.generic.BaseModel;
 
 public class Category extends BaseModel{
 	private static final long serialVersionUID = 1L;
+	
+	private Long user;
 
     private String name;
 
@@ -13,7 +15,15 @@ public class Category extends BaseModel{
     
     private Integer type;
 
-    public String getName() {
+    public Long getUser() {
+		return user;
+	}
+
+	public void setUser(Long user) {
+		this.user = user;
+	}
+
+	public String getName() {
         return name;
     }
 

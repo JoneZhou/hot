@@ -2,6 +2,8 @@ package com.zliteams.hot.core;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.util.ThreadContext;
+
 import com.zliteams.hot.web.model.User;
 
 /**

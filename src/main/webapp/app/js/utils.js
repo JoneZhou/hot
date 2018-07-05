@@ -19,145 +19,148 @@ define(function(require, exports, module) {
 		},
 		chartOption: function(){
 			var option = {
-			    tooltip: {
-			        trigger: 'axis',
-			        axisPointer: {
-			            type: 'cross',
-			            crossStyle: {
-			                color: '#999'
-			            }
-			        }
-			    },
-			    toolbox: {
-			        feature: {
-			            dataView: {show: true, readOnly: false},
-			            magicType: {show: true, type: ['line', 'bar']},
-			            restore: {show: true},
-			            saveAsImage: {show: true}
-			        }
-			    },
-			    legend: {
-			        data:['蒸发量','降水量','平均温度','平均湿度']
-			    },
-			    xAxis: [
-			        {
-			            type: 'category',
-			            data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-			            axisPointer: {
-			                type: 'shadow'
-			            }
-			        },
-			        {
-			            type: 'category',
-			            data: ['2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012'],
-			            axisPointer: {
-			                type: 'shadow'
-			            }
-			        }
-			    ],
-			    yAxis: [
-			        {
-			            type: 'value',
-			            name: '水量',
-			            position:'left',
-			            offset: 0.5,
-			            min: 0,
-			            max: 250,
-			            interval: 50,
-			            axisLabel: {
-			                formatter: '{value} ml'
-			            }
-			        },
-			        {
-			            type: 'value',
-			            name: '温度',
-			            min: 0,
-			            max: 25,
-			            interval: 5,
-			            axisLabel: {
-			                formatter: '{value} °C'
-			            }
-			        },
-			        {
-			            type: 'value',
-			            name: '湿度',
-			            min: 0,
-			            max: 100,
-			            interval: 25,
-			            offset:-80,
-			            splitLine:{
-			                show:false // 不显示分割线
-			            },
-			            axisLine:{lineStyle:{type:'dotted',color:'red'}}, // 坐标线样式
-			            position:'right',
-			            axisLabel: {
-			                formatter: '{value} %rh'
-			            }
-			        }
-			    ],
-			    series: [
-			        {
-			            name:'蒸发量',
-			            type:'bar',
-			            label: {
-			                normal: {
-			                    show: true,
-			                    position: 'inside'
-			                }
-			            },
-			            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-			        },
-			        {
-			            name:'降水量',
-			            type:'bar',
-			            label: {
-			                normal: {
-			                    show: true,
-			                    position: 'inside'
-			                }
-			            },
-			            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-			        },
-			        {
-			            name:'平均温度',
-			            type:'line',
-			            yAxisIndex: 1,
-			            label: {
-			                normal: {
-			                    show: true,
-			                    position: 'top'
-			                }
-			            },
-			            data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
-			        },
-			        {
-			            name:'平均湿度',
-			            type:'line',
-			            yAxisIndex: 2,
-			            label: {
-			                normal: {
-			                    show: true,
-			                    position: 'top'
-			                }
-			            },
-			            data:[12.0, 12.2, 13.3, 41.5, 61.3, 80.2, 20.3, 23.4, 23.0, 56.5, 32.0, 61.2]
-			        },
-			        {
-			            name:'平均风力',
-			            type:'line',
-			            xAxisIndex:1,
-			            label: {
-			                normal: {
-			                    show: true,
-			                    position: 'top'
-			                }
-			            },
-			            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-			        },
-			    ]
-			};
+				    tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'cross',
+				            crossStyle: {
+				                color: '#f00'
+				            }
+				        }
+				    },
+				    legend: {
+				    	type:'scroll',
+				        data:['经营','食物','娱乐','交通','衣服','食物','333','日常','理财','工资','住房']
+				    },
+				    xAxis: [
+				        {
+				            type: 'category',
+				            data: ['2018-04月','2018-05月','2018-06月'],
+				            axisPointer: {
+				                type: 'shadow'
+				            }
+				        },
+				         {
+				            type: 'category',
+				            data: ['收入','支出','收入','支出','收入','支出'],
+				            axisTick:{show:true},
+				            axisPointer: {
+				                type: 'line'
+				            },
+				        }
+				    ],
+				    yAxis: [
+				        {
+				            type: 'value'
+				        }
+				    ],
+				    dataZoom: [
+				            
+				            {
+				                type: 'slider',
+				                start: 0,
+				                end: 100,
+				                xAxisIndex:0
+				            },
+				            {
+				                type: 'inside',
+				                start: 0,
+				                end: 100,
+				                xAxisIndex:0
+				            }
+				        ],
+				    series: [
+				        {
+				            name:'衣服',
+				            type:'bar',
+				            data:[null, null, null],
+				            stack:'支出',
+				            xAxisIndex:0,
+				            label:{show:true,formatter: '{a}: {c}'}
+				            
+				        },
+				        {
+				        	name:'食物',
+				        	type:'bar',
+				        	data:[null, null, null],
+				        	stack:'支出',
+				        	xAxisIndex:0,
+				        	label:{show:true,formatter: '{a}: {c}'}
+				        
+				        },
+				        {
+				        	name:'住房',
+				        	type:'bar',
+				        	data:[10, 36, 94],
+				        	stack:'支出',
+				        	xAxisIndex:0,
+				        	label:{show:true,formatter: '{a}: {c}'}
+				        
+				        },
+				        {
+				            name:'工资',
+				            type:'bar',
+				            data:[20, 85, 65],
+				            stack:'收入',
+				            label:{show:true,formatter: '{a}: {c}'}
+				        },
+				        {
+				            name:'经营',
+				            type:'bar',
+				            data:[20, 85, 65],
+				            stack:'收入',
+				            label:{show:true,formatter: '{a}: {c}'}
+				        },
+				        {
+				            name:'理财',
+				            type:'bar',
+				            data:[20, 85, 65],
+				            stack:'收入',
+				            label:{show:true,formatter: '{a}: {c}'}
+				        }
+				    ]
+				};
 			return option;
-		}
+		},
+		/**
+		 * 合并table列
+		 */
+		mergeTable: function  (tab,minCol,maxCol) {
+            var  val, count, start;  //minCol maxCol：合并单元格作用从minCol到maxCol列
+            for(var col = minCol; col < maxCol ; col++) {
+                count = 1;
+                val = "";
+                for(var i=0; i<tab.rows.length; i++) {
+                    var tdVal = "";
+                    for(var j=col; j>=minCol; j--){
+                    	tdVal += tab.rows[i].cells[j].innerHTML;
+                    }
+                	if(val == tdVal) {
+                        count++;
+                    } else {
+                        if (count > 1) {
+                            //合并
+                            start = i - count;
+                            tab.rows[start].cells[col].rowSpan = count;
+                            for(var j=start+1; j<i; j++) {
+                                tab.rows[j].cells[col].style.display = "none";
+                            }
+                            count = 1;
+                        }
+                        val = tdVal;
+                    }
+                }
+
+                if(count > 1 ) {
+                    //合并，最后几行相同的情况下
+                    start = i - count;
+                    tab.rows[start].cells[col].rowSpan = count;
+                    for(var j=start+1; j<i; j++) {
+                        tab.rows[j].cells[col].style.display = "none";
+                    }
+                }
+            }
+        }
 	}
 	
 	module.exports = Utils;

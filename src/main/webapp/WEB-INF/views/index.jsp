@@ -326,7 +326,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
 
         <script src="assets/scripts/app.js" type="text/javascript"></script>
-        <script type="text/javascript" src="app/js/index.js"></script>
+        <script type="text/javascript" src="assets/scripts/home/index.js"></script>
 
         <!-- <script data-main="app/js/main" src="app/lib/requirejs/require.js"></script> -->
     </body>

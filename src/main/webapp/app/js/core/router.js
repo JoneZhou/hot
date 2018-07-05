@@ -9,6 +9,7 @@ define(function(require, exports, module) {
 
 		routes : {
 			"rest/bill/bill"				: "bill",
+			"rest/bill/bill;:jid"			: "bill",
 			"rest/bill/bill/:param"			: "bill"
 		},
 		

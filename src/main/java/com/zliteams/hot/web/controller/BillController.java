@@ -1,10 +1,12 @@
 package com.zliteams.hot.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -20,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zliteams.hot.core.entity.JSONResult;
 import com.zliteams.hot.core.feature.orm.mybatis.Page;
 import com.zliteams.hot.core.field.Field;
+import com.zliteams.hot.core.field.FieldType;
 import com.zliteams.hot.core.query.Query;
+import com.zliteams.hot.core.query.QueryCondition;
+import com.zliteams.hot.core.query.QueryCondition.CompareType;
 import com.zliteams.hot.core.report.Report;
 import com.zliteams.hot.web.model.Bill;
 import com.zliteams.hot.web.model.Category;
@@ -67,14 +72,15 @@ public class BillController {
     @ResponseBody
     public JSONResult<Bill> createBill(Bill bill) {
     	JSONResult<Bill> jsonResult = new JSONResult<>();
-    	Subject subject = SecurityUtils.getSubject();
-    	User user = (User) subject.getSession().getAttribute("userInfo");
     	if(bill.getCreateTime() == null) {
     		bill.setCreateTime(new Date());
     	}
-    	bill.setUser(user.getId());
+    	if(bill.getUser() == null){
+    		bill.setUser(getCurrentUserId());
+    	}
     	billService.insert(bill);
     	jsonResult.setData(bill);
+    	jsonResult.setSuccess(true);
     	return jsonResult;
     }
     @RequestMapping(value = "/createCategory", method = RequestMethod.POST)
@@ -83,6 +89,7 @@ public class BillController {
     	JSONResult<Category> jsonResult = new JSONResult<>();
     	try {
     		category.setCreateTime(new Date());
+    		category.setUser(getCurrentUserId());
     		categoryService.insert(category);
     		jsonResult.setData(category);
     		jsonResult.setSuccess(true);
@@ -98,6 +105,9 @@ public class BillController {
     public JSONResult<List<Category>> getCategorys(Category category) {
     	JSONResult<List<Category>> jsonResult = new JSONResult<>();
     	try {
+    		if(category.getUser() == null){
+    			category.setUser(getCurrentUserId());
+    		}
     		List<Category> categorys = categoryService.selectList(category);
     		jsonResult.setData(categorys);
     		jsonResult.setSuccess(true);
@@ -113,7 +123,7 @@ public class BillController {
     public JSONResult<Page<Bill>> queryBills(@RequestBody Query query) {
     	JSONResult<Page<Bill>> jsonResult = new JSONResult<>();
     	try {
-    		
+    		query.setConditions(joinUserCondition(query.getConditions()));
     		Page<Bill> page = new Page<>(query.getPageNo(), query.getPageSize());
     		
     		billService.queryBills(page, query);
@@ -136,6 +146,7 @@ public class BillController {
     				field.setFieldSql("(case when type=0 then '支出' else '收入' end)");
     			}
     		}
+    		report.setConditions(joinUserCondition(report.getConditions()));
     		List<Map<String, Object>> reportResult = billService.getReport(report);
     		jsonResult.setData(reportResult);
     		jsonResult.setSuccess(true);
@@ -145,6 +156,27 @@ public class BillController {
     		jsonResult.setSuccess(false);
     	}
     	return jsonResult;
+    }
+    
+    private Long getCurrentUserId(){
+    	Subject subject = SecurityUtils.getSubject();
+    	User user = (User) subject.getSession().getAttribute("userInfo");
+    	return user.getId();
+    }
+    
+    private List<QueryCondition> joinUserCondition(List<QueryCondition> conditions){
+    	if(conditions == null){
+    		conditions = new ArrayList<QueryCondition>();
+    	}
+		QueryCondition userCondition = new QueryCondition();
+		Field field = new Field();
+		field.setFieldId("user");
+		field.setFieldType(FieldType.Number);
+		userCondition.setCompareType(CompareType.eq);
+		userCondition.setFieldValue(getCurrentUserId().toString());
+		userCondition.setField(field);
+		conditions.add(userCondition);
+		return conditions;
     }
     
 }

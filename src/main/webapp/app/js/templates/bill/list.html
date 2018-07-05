@@ -13,7 +13,7 @@
 		<% _.each(page.result, function(bill,index) { %>
 			<tr class="">
 				<td class=""><%=(index+1) %></td>
-			  	<td class=""><%=(Date.create(bill.createTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) %></td>
+			  	<td class=""><%=(Date.create(bill.createTime).format("{yyyy}-{MM}-{dd}")) %></td>
 			  	<td class=""><%=(bill.type==0?'支出':'收入') %></td>
 			  	<td class=""><%=bill.categoryObj.name %></td>
 			  	<td class=""><%=bill.money %></td>

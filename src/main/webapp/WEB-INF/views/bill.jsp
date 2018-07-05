@@ -24,6 +24,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     	
         <!-- 引入 ECharts 文件 -->
     	<script src="/app/plugins/echarts/echarts.min.js"></script>
+    	
+    	
+    	<style type="text/css">
+    		.table td {
+    			vertical-align: middle !important;
+    		}
+    	</style>
     </head>
     <body>
     	<p></p>

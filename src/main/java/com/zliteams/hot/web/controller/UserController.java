@@ -1,7 +1,10 @@
 package com.zliteams.hot.web.controller;
 
+import java.io.Serializable;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -11,7 +14,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.session.mgt.DefaultSessionKey;
+import org.apache.shiro.session.mgt.SessionKey;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zliteams.hot.core.entity.JSONResult;
 import com.zliteams.hot.core.feature.orm.mybatis.Page;
+import com.zliteams.hot.core.util.CookieUtils;
 import com.zliteams.hot.core.util.ShiroHash;
 import com.zliteams.hot.web.dao.BillMapper;
 import com.zliteams.hot.web.model.User;
@@ -47,6 +54,8 @@ public class UserController {
     private CategoryService categoryService;
     @Resource
     private BillService billService;
+    @Resource
+    private org.apache.shiro.web.mgt.DefaultWebSecurityManager securityManager;
     
     @Resource
 	private BillMapper billMapper;
@@ -59,7 +68,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public String login(@Valid User user, BindingResult result, Model model, HttpServletRequest request) {
+    public String login(@Valid User user, BindingResult result, Model model, HttpServletRequest request,HttpServletResponse response) {
         try {
             Subject subject = SecurityUtils.getSubject();
             // 已登陆则 跳到首页
@@ -73,11 +82,12 @@ public class UserController {
             }
             // 身份验证
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-            token.setRememberMe(true);
+//            token.setRememberMe(true);
             subject.login(token);
             // 验证成功在Session中保存用户信息
             final User authUserInfo = userService.selectByUsername(user.getUsername());
             request.getSession().setAttribute("userInfo", authUserInfo);
+            
         } catch (AuthenticationException e) {
             // 身份验证失败
             model.addAttribute("error", "用户名或密码错误 ！");
@@ -125,13 +135,19 @@ public class UserController {
     /**
      * 基于角色 标识的权限控制案例
      */
-    @RequestMapping(value = "/admin",produces="text/html;charset=UTF-8")
+    @RequestMapping(value = "/admin")
     @ResponseBody
-    @RequiresRoles(value = RoleSign.ADMIN)
-    public String admin() {
+    public String admin(HttpServletRequest request) {
+    	logger.info(request.getSession().getId());
     	Subject subject = SecurityUtils.getSubject();
+    	String sessionId = CookieUtils.getCookie(request, "HOTID");
+    	sessionId = request.getParameter("HOTID");
+    	System.out.println(request.getParameter("HOTID"));
+    	org.apache.shiro.session.Session session = securityManager.getSession(new DefaultSessionKey(sessionId));
     	logger.debug(subject.isRemembered()+"==============isRemembered");
     	logger.debug(subject.isAuthenticated()+"=================isAuthenticated");
+    	logger.debug(session.getId()+"=================sessionId");
+    	logger.debug(session.getAttribute("userinfo")+"=================sessionId");
         return "拥有admin角色,能访问";
     }
 

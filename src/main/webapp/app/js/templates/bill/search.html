@@ -18,7 +18,7 @@
 				<li class="<% if(type=='list') {%> active <%}%>"><a class="router" href="/rest/bill/bill/list">List</a></li>
 				<li class="<% if(type=='report') {%> active <%}%>"><a class="router" href="/rest/bill/bill/report">Report</a></li>
 			</ul>
-			<form id="search_bill" class="navbar-form navbar-left hidden j_search_bill">
+			<form id="search_bill" class="navbar-form navbar-left <% if(type!='list') {%> hidden <%}%> j_search_bill">
 				<!-- 日期比较 -->
 				<div class="form-group">
 					<input type="date" class="form-control input-sm j_date-start">
